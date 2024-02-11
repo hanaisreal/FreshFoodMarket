@@ -1,5 +1,6 @@
-"use client";
+'use client';
 import Image from 'next/image';
+import {signIn} from "next-auth/react";
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -41,7 +42,13 @@ export default function RegisterPage(){
                     <Link className="underline" href={'/login'}>로그인 &raquo;</Link>
                 </div>
             )}
-                        <form className="block max-w-xl mx-auto" onSubmit={handleFormSubmit}>
+            {error && (
+                <div className="my-4 text-center">
+                An error has occurred.<br />
+                Please try again later
+                </div>
+            )}
+                        <form className="block max-w-xl mx-w-xs" onSubmit={handleFormSubmit}>
                             <input type="email" placeholder="이메일" value={email}
                                 disabled={creatingUser} 
                                 onChange={ev=> setEmail(ev.target.value)}/>
