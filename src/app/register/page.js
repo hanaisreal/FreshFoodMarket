@@ -32,7 +32,7 @@ export default function RegisterPage(){
     }
     return (
         <section className="mt-8">
-            <h1 className="text-center text-primary font-semibold text-4xl mb-4">
+            <h1 className="text-center text-primary text-4xl mb-4">
                 회원가입
             </h1>
             {userCreated && (
@@ -48,7 +48,7 @@ export default function RegisterPage(){
                 Please try again later
                 </div>
             )}
-                        <form className="block max-w-xl mx-w-xs" onSubmit={handleFormSubmit}>
+                        <form className="max-w-xs mx-auto" onSubmit={handleFormSubmit}>
                             <input type="email" placeholder="이메일" value={email}
                                 disabled={creatingUser} 
                                 onChange={ev=> setEmail(ev.target.value)}/>
@@ -58,10 +58,13 @@ export default function RegisterPage(){
                             <button type="submit" disabled={creatingUser}>
                                 회원가입
                             </button>
+                            
                             <div className="my-4 text-center text-gray-500"> 또는 간편하게 연결하기 </div>
-                            <button className='flex gap-4 justify-center'> 
-                                <Image src={'/google.png'} width={25} height={25} alt={'Google'} />
-                                Login with google</button>
+                            <button type="button" onClick={() => signIn('google', {callbackUrl: '/'})}
+                                className="flex gap-4 justify-center">
+                                <Image src={'/google.png'} alt={''} width={24} height={24} />
+                                Login with google
+                            </button>
                                 <div className="text-center my-4 text-gray-500 border-t pt-4">
                                 이미 계정이 있으신가요?{' '}
                                 <Link className="underline" href={'/login'}>여기로 로그인 &raquo;</Link>
@@ -69,5 +72,5 @@ export default function RegisterPage(){
                         </form>
             
         </section>
-    )
+     )
 }
