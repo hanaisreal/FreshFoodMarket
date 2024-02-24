@@ -35,7 +35,7 @@ export default function LoginPage() {
         <button type="button" onClick={() => signIn('google', {callbackUrl: '/'})}
                 className="flex gap-4 justify-center">
           <Image src={'/google.png'} alt={''} width={24} height={24} />
-          Login with google
+          구글로 로그인
         </button>
       </form>
     </section>
