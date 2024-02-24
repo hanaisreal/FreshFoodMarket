@@ -10,6 +10,10 @@ import clientPromise from "@/libs/mongoConnect";
 const handler = NextAuth({
   secret: process.env.SECRET,
   adapter: MongoDBAdapter(clientPromise),
+  session: {
+    // Set it as jwt instead of database
+    strategy: "jwt",
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -23,6 +27,7 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
+        console.log({credentials})
         const email = credentials?.email;
         const password = credentials?.password;
 
@@ -32,8 +37,8 @@ const handler = NextAuth({
         const user = await User.findOne({email});
         const passwordOk = user && bcrypt.compareSync(password, user.password);
 
-        console.log("password"+password);
-
+        console.log("password:"+ passwordOk);
+        console.log("password:"+ password);
         if (passwordOk) {
           return user;
         }
