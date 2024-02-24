@@ -5,8 +5,6 @@ import {signOut, useSession} from "next-auth/react";
 export default function Header() {
   const session = useSession();
   const status = session?.status;
-  console.log(session);
-  console.log(session.user);
 
 
   return (
