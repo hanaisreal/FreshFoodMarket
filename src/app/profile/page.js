@@ -1,7 +1,8 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/dist/server/api-utils';
+import Image from "next/image";
+import {redirect} from "next/navigation";
 
 export default function ProfilePage() {
     const session = useSession();
