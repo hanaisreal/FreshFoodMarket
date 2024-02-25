@@ -8,6 +8,10 @@ const nextConfig = {
             port: "",
             pathname: '/*/**',
           },
+          {
+            protocol: 'https', 
+            hostname: 'food-ordering-hanaoh.s3.amazonaws.com',
+          }
         ],
       },
 };
