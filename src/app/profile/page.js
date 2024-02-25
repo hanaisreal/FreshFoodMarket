@@ -39,10 +39,13 @@ export default function ProfilePage() {
         
         if(files?.length === 1){
             const data = new FormData;
-            data.set('files', files[0])
+            data.set('file', files[0]) //file이란 이름으로 post 요청을 보낸다.
             await fetch('/api/upload', {
                 method: 'POST',
                 body: data,
+                // headers: {
+                //     'Content-Type': 'multipart/form-data'
+                // }
             })
         }
     }
