@@ -9,6 +9,7 @@
         "@/*": ["./src/*"]
       },
       "allowJs": true,
+      "checkJs":true,
       "skipLibCheck": true,
       "strict": false,
       "noEmit": true,

@@ -33,6 +33,20 @@ export default function ProfilePage() {
         })
     }
 
+    async function handleFileChange(ev){
+        console.log(ev);
+        const files = ev?.target.files;
+        
+        if(files?.length === 1){
+            const data = new FormData;
+            data.set('files', files[0])
+            await fetch('/api/upload', {
+                method: 'POST',
+                body: data,
+            })
+        }
+    }
+
     if(status === 'loading'){
         return'로딩중..';
     }
@@ -56,7 +70,12 @@ export default function ProfilePage() {
                         <div className=' p-2 rounded-lg relative'>
                         <Image src={userImage} alt={'avatar'} className='rounded-lg w-full h-full mb-1'
                         width={250} height={250} priority/>
-                        <button type='button' className='btn-primary'>변경</button>
+                        <label>
+                            <input type='file' className='hidden' onChange={handleFileChange}/>
+                            <span className='block border rounded-lg p-2 text-center
+                            cursor-pointer'>사진 변경</span>
+                        </label>
+                        
                         </div> 
                     </div>
                     <form className='grow' onSubmit={handleProfileInfoUpdate}>
