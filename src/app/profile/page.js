@@ -1,5 +1,6 @@
 'use client';
 
+import { set } from 'mongoose';
 import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import {redirect} from "next/navigation";
@@ -9,10 +10,15 @@ export default function ProfilePage() {
     const session = useSession();
     const {status} = session;
     const [userName, setUserName] = useState('');
+    const [image, setImage] = useState('');
+    const [saved, setSaved] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    
 
     useEffect(() => {
         if(session.data){
             setUserName(session.data.user.name);
+            setImage(session.data.user.image);
         }
     }, [session, status]);
 
@@ -20,7 +26,8 @@ export default function ProfilePage() {
 
     async function handleProfileInfoUpdate(ev){
         ev.preventDefault();
-        console.log('update profile info');
+        setSaved(false);
+        setIsSaving(true);
         await fetch('/api/profile', {
             method: 'PUT',
             headers: {
@@ -31,6 +38,8 @@ export default function ProfilePage() {
             })
 
         })
+        setIsSaving(false);
+        setSaved(true);
     }
 
     async function handleFileChange(ev){
@@ -40,13 +49,12 @@ export default function ProfilePage() {
         if(files?.length === 1){
             const data = new FormData;
             data.set('file', files[0]) //file이란 이름으로 post 요청을 보낸다.
-            await fetch('/api/upload', {
+            const response = await fetch('/api/upload', {
                 method: 'POST',
                 body: data,
-                // headers: {
-                //     'Content-Type': 'multipart/form-data'
-                // }
             })
+            const link = await response.json();
+            setImage(link);
         }
     }
 
@@ -57,22 +65,28 @@ export default function ProfilePage() {
         return redirect('/login');
     }
 
-    const userImage = session.data.user.image;
-
     return (
         <section>
             <h1 className="text-center text-primary text-4xl mb-4">
                 프로필
             </h1>
             <div className="max-w-md mx-auto ">
-                <h2 className="text-center text-primary text-2xl mb-4">
-                    profile saved!
-                </h2>
+                {saved && 
+                    <h2 className="text-center text-primary text-2xl mb-4">
+                        profile saved!
+                    </h2>}
+                {isSaving &&
+                    <h2 className="text-center text-primary text-2xl mb-4">
+                        saving...
+                    </h2>}
                 <div className='flex gap-4 items-center'>
                     <div>
                         <div className=' p-2 rounded-lg relative'>
-                        <Image src={userImage} alt={'avatar'} className='rounded-lg w-full h-full mb-1'
-                        width={250} height={250} priority/>
+                        {image &&
+                            <Image src={image} alt={'avatar'} className='rounded-lg w-full h-full mb-1'
+                            width={250} height={250} priority unoptimized={true}/>
+                        }
+                        
                         <label>
                             <input type='file' className='hidden' onChange={handleFileChange}/>
                             <span className='block border rounded-lg p-2 text-center
